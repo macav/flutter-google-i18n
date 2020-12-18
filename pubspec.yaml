@@ -1,8 +1,7 @@
 name: flutter_google_i18n
 description: Flutter I18n managed in Google spreadsheet
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/macav/flutter-google-i18n
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -10,8 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  async_resource: 0.1.4
-  path_provider: 0.5.0
+  async_resource: ^0.1.4
+  path_provider: ^0.5.0
 
 dev_dependencies:
   flutter_test:
