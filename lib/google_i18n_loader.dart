@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:async_resource/file_resource.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class GoogleI18nLoader {
   List<String> loadedLanguages;
@@ -18,24 +17,16 @@ class GoogleI18nLoader {
     return loadedLanguages;
   }
 
-  Future<dynamic> _loadSpreadsheetWithCache() async {
-    final path = (await getApplicationDocumentsDirectory()).path;
-    final cacheFile = File('$path/translations.json');
-
-    final myDataResource = HttpNetworkResource<dynamic>(
-      url: spreadsheetUrl,
-      parser: (contents) => json.decode(contents),
-      cache: FileResource(cacheFile),
-      strategy: CacheStrategy.networkFirst,
-    );
-    return await myDataResource.get();
+  Future<File> _loadSpreadsheetWithCache() async {
+    return await DefaultCacheManager().getSingleFile(spreadsheetUrl);
   }
 
   /// Load localized values from the spreadsheet. Uses cache, so if the network connection is not available,
   /// the cached version is returned.
   Future<bool> load() async {
-    var _result = await _loadSpreadsheetWithCache();
-    List<dynamic> entries = _result['feed']['entry'];
+    var _file = await _loadSpreadsheetWithCache();
+    var data = jsonDecode(await _file.readAsString());
+    List<dynamic> entries = data['feed']['entry'];
     loadedLanguages = entries[0]
         .keys
         .toList()
