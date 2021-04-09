@@ -43,7 +43,8 @@ class GoogleI18nLoader {
         .map((element) => element.replaceFirst('gsx\$', ''))
         .toList()
         .cast<String>();
-    localizedValues = Map.fromIterable(loadedLanguages, key: (e) => e, value: (_e) => {});
+    localizedValues =
+        Map.fromIterable(loadedLanguages, key: (e) => e, value: (_e) => {});
 
     entries.forEach((translation) {
       final key = translation['gsx\$key']['\$t'];

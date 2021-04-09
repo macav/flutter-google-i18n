@@ -58,7 +58,8 @@ class GoogleI18nLocalizations {
 /// ```dart
 /// GoogleI18nLocalizationsDelegate('https://spreadsheets.google.com/feeds/list/.../1/public/values?alt=json')
 /// ```
-class GoogleI18nLocalizationsDelegate extends LocalizationsDelegate<GoogleI18nLocalizations> {
+class GoogleI18nLocalizationsDelegate
+    extends LocalizationsDelegate<GoogleI18nLocalizations> {
   static GoogleI18nLocalizations _localizations;
   Locale currentLocale;
 
@@ -70,7 +71,8 @@ class GoogleI18nLocalizationsDelegate extends LocalizationsDelegate<GoogleI18nLo
     var supportedLocales = _localizations.supportedLocales;
     return supportedLocales == null
         ? true
-        : supportedLocales.contains(locale) || supportedLocales.contains(locale.languageCode);
+        : supportedLocales.contains(locale) ||
+            supportedLocales.contains(locale.languageCode);
   }
 
   @override

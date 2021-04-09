@@ -68,7 +68,8 @@ class MyHomePage extends StatelessWidget {
             children: <Widget>[
               DropdownButton(
                 items: i18n.supportedLocales.map((locale) {
-                  return DropdownMenuItem(child: Text(locale.toUpperCase()), value: locale);
+                  return DropdownMenuItem(
+                      child: Text(locale.toUpperCase()), value: locale);
                 }).toList(),
                 value: i18n.locale.languageCode,
                 onChanged: (String value) {
@@ -84,9 +85,12 @@ class MyHomePage extends StatelessWidget {
                     primary: Colors.blue,
                     onPrimary: Colors.white,
                   ),
-                  child: Text("Switch to ${i18n.locale.languageCode == 'en' ? 'DE' : 'EN'}"),
+                  child: Text(
+                      "Switch to ${i18n.locale.languageCode == 'en' ? 'DE' : 'EN'}"),
                   onPressed: () {
-                    Locale newLocale = i18n.locale.languageCode == 'en' ? const Locale('de') : const Locale('en');
+                    Locale newLocale = i18n.locale.languageCode == 'en'
+                        ? const Locale('de')
+                        : const Locale('en');
                     GoogleI18nLocalizations.setLocale(context, newLocale);
                     this.onLocaleSwitch(newLocale);
                   })
