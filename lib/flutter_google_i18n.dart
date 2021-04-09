@@ -11,18 +11,18 @@ class GoogleI18nLocalizations {
     googleI18n = GoogleI18nLoader(spreadsheetUrl);
   }
 
-  Locale locale;
-  List<String> supportedLocales;
-  GoogleI18nLoader googleI18n;
+  late Locale locale;
+  List<String>? supportedLocales;
+  late GoogleI18nLoader googleI18n;
 
-  static GoogleI18nLocalizations of(BuildContext context) {
+  static GoogleI18nLocalizations? of(BuildContext context) {
     return Localizations.of<GoogleI18nLocalizations>(
       context,
       GoogleI18nLocalizations,
     );
   }
 
-  Map<String, Map<String, String>> _localizedValues;
+  late Map<String, Map<String, String>> _localizedValues;
 
   /// This method is called by the delegate to fetch translations.
   Future<bool> load() async {
@@ -34,7 +34,7 @@ class GoogleI18nLocalizations {
 
   /// Sets a new locale
   static setLocale(final BuildContext context, final Locale newLocale) {
-    final currentInstance = GoogleI18nLocalizations.of(context);
+    final currentInstance = GoogleI18nLocalizations.of(context)!;
     currentInstance.locale = newLocale;
   }
 
@@ -45,10 +45,12 @@ class GoogleI18nLocalizations {
   /// i18n.t('title');
   /// ```
   String t(String key) {
+    String fallbackTranslation = '$key translation missing.';
     try {
-      return this._localizedValues[locale.languageCode][key];
+      return this._localizedValues[locale.languageCode]![key] ??
+          fallbackTranslation;
     } on NoSuchMethodError {
-      return '$key translation missing.';
+      return fallbackTranslation;
     }
   }
 }
@@ -60,8 +62,8 @@ class GoogleI18nLocalizations {
 /// ```
 class GoogleI18nLocalizationsDelegate
     extends LocalizationsDelegate<GoogleI18nLocalizations> {
-  static GoogleI18nLocalizations _localizations;
-  Locale currentLocale;
+  static late GoogleI18nLocalizations _localizations;
+  late Locale currentLocale;
 
   GoogleI18nLocalizationsDelegate(spreadsheetUrl) {
     _localizations = GoogleI18nLocalizations(spreadsheetUrl);

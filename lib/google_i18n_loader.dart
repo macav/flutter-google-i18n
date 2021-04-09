@@ -3,17 +3,14 @@ import 'dart:io';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class GoogleI18nLoader {
-  List<String> loadedLanguages;
-  Map<String, Map<String, String>> localizedValues;
+  late List<String> loadedLanguages;
+  late Map<String, Map<String, String>> localizedValues;
   String spreadsheetUrl;
 
   GoogleI18nLoader(this.spreadsheetUrl);
 
-  /// Retrieve supported languages. If they haven't been loaded yet, it calls the `load` method.
+  /// Retrieve supported languages
   Future<List<String>> fetchLoadedLanguages() async {
-    if (loadedLanguages == null) {
-      await load();
-    }
     return loadedLanguages;
   }
 
@@ -40,7 +37,7 @@ class GoogleI18nLoader {
     entries.forEach((translation) {
       final key = translation['gsx\$key']['\$t'];
       loadedLanguages.forEach((language) {
-        localizedValues[language][key] = translation['gsx\$$language']['\$t'];
+        localizedValues[language]![key] = translation['gsx\$$language']['\$t'];
       });
     });
     return true;
