@@ -10,14 +10,15 @@ class GoogleI18nLoader {
 
   GoogleI18nLoader(this.spreadsheetUrl);
 
-  Future<List<String>> getLoadedLanguages() async {
+  /// Retrieve supported languages. If they haven't been loaded yet, it calls the `load` method.
+  Future<List<String>> fetchLoadedLanguages() async {
     if (loadedLanguages == null) {
       await load();
     }
     return loadedLanguages;
   }
 
-  Future<dynamic> loadSpreadsheetWithCache() async {
+  Future<dynamic> _loadSpreadsheetWithCache() async {
     final path = (await getApplicationDocumentsDirectory()).path;
     final cacheFile = File('$path/translations.json');
 
@@ -30,8 +31,10 @@ class GoogleI18nLoader {
     return await myDataResource.get();
   }
 
+  /// Load localized values from the spreadsheet. Uses cache, so if the network connection is not available,
+  /// the cached version is returned.
   Future<bool> load() async {
-    var _result = await loadSpreadsheetWithCache();
+    var _result = await _loadSpreadsheetWithCache();
     List<dynamic> entries = _result['feed']['entry'];
     loadedLanguages = entries[0]
         .keys

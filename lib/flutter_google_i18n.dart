@@ -16,11 +16,15 @@ class GoogleI18nLocalizations {
   GoogleI18nLoader googleI18n;
 
   static GoogleI18nLocalizations of(BuildContext context) {
-    return Localizations.of<GoogleI18nLocalizations>(context, GoogleI18nLocalizations);
+    return Localizations.of<GoogleI18nLocalizations>(
+      context,
+      GoogleI18nLocalizations,
+    );
   }
 
   Map<String, Map<String, String>> _localizedValues;
 
+  /// This method is called by the delegate to fetch translations.
   Future<bool> load() async {
     var result = await googleI18n.load();
     this.supportedLocales = googleI18n.loadedLanguages;
@@ -28,11 +32,18 @@ class GoogleI18nLocalizations {
     return result;
   }
 
-  static refresh(final BuildContext context, final Locale newLocale) {
+  /// Sets a new locale
+  static setLocale(final BuildContext context, final Locale newLocale) {
     final currentInstance = GoogleI18nLocalizations.of(context);
     currentInstance.locale = newLocale;
   }
 
+  /// Get a translated value for a specific key.
+  /// ## Sample code
+  /// ```dart
+  /// GoogleI18nLocalizations i18n = GoogleI18nLocalizations.of(context);
+  /// i18n.t('title');
+  /// ```
   String t(String key) {
     try {
       return this._localizedValues[locale.languageCode][key];
@@ -42,6 +53,11 @@ class GoogleI18nLocalizations {
   }
 }
 
+/// Delegate for the localizations fetched from a Google spreadsheet.
+/// ## Sample code
+/// ```dart
+/// GoogleI18nLocalizationsDelegate('https://spreadsheets.google.com/feeds/list/.../1/public/values?alt=json')
+/// ```
 class GoogleI18nLocalizationsDelegate extends LocalizationsDelegate<GoogleI18nLocalizations> {
   static GoogleI18nLocalizations _localizations;
   Locale currentLocale;
